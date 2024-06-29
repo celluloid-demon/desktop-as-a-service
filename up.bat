@@ -15,8 +15,9 @@ REM Summary:
 REM - Change up-xfce line endings
 REM - Run up-xfce in a login shell
 
-wsl --distribution ubuntu-24.04 -u jonathan -e tmux new-session -d -s xfce 'dos2unix ./up-xfce && bash --login -c ./up-xfce'
+@REM wsl --distribution ubuntu-24.04 -u jonathan -e tmux new-session -d -s xfce 'dos2unix ./up-xfce && bash --login -c ./up-xfce'
+wsl --distribution ubuntu-24.04 -u jonathan -e tmux new-session -d -s xfce 'unix2dos ./up-xfce && bash --login -c ./up-xfce'
 
 @REM timeout /t 2 /nobreak > nul
 
-@REM wsl --distribution ubuntu-24.04 -u jonathan -e tmux attach-session -t xfce-session
+@REM wsl --distribution ubuntu-24.04 -u jonathan -e tmux attach-session -t xfce
