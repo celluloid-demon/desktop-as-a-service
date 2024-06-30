@@ -11,3 +11,7 @@ RUN dnf install -y ncurses util-linux util-linux-user passwd nano vim git gh wge
 
 # Install XFCE
 RUN dnf groupinstall -y "Xfce Desktop"
+
+# Bootstrap
+# RUN mkdir 
+# RUN git clone https://github.com/celluloid-demon/bootstrap

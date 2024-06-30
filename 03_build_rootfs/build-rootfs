@@ -22,7 +22,7 @@ docker build --tag $NAME:$TAG .
 docker run -t $NAME:$TAG bash -c ls /
 
 # Export container
-docker export -o "${BUILD_DIR}/${NAME}${TAG}.tar" $(docker container ls -a | grep -i fedora-xfce | awk '{print $1}')
+docker export -o "rootfs.tar" $(docker container ls -a | grep -i fedora-xfce | awk '{print $1}')
 
 # (Optional) Clean build system
 # docker container prune
