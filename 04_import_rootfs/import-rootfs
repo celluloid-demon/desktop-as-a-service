@@ -1,6 +1,21 @@
 #!/bin/bash
 
-mkdir -p /mnt/c/Fedora-40-XFCE
-mkdir -p /mnt/c/tmp
+# Exit on error
+set -e
 
-cmd.exe /c 'wsl.exe --import Fedora-40-XFCE C:\Fedora-40-XFCE .\rootfs\rootfs.tar'
+# Declare constants
+BUILD_DIR=/mnt/c/tmp/daas/build
+DISTRO_NAME=Fedora
+INSTALL_TAR_FILE=rootfs.tar
+
+WIN_BUILD_DIR='C:\tmp\daas\build'
+WIN_INSTALL_LOCATION='C:\Fedora'
+
+# Initialize
+[ ! -f ${BUILD_DIR}/${INSTALL_TAR_FILE} ] && echo "${BUILD_DIR}/${INSTALL_TAR_FILE} not detected, exiting..." && exit 1
+
+# Evade UNC complaints
+cd $BUILD_DIR
+
+# wsl --import <DistroName> <InstallLocation> <InstallTarFile>
+cmd.exe /c wsl --import $DISTRO_NAME $WIN_INSTALL_LOCATION ${WIN_BUILD_DIR}/${INSTALL_TAR_FILE}

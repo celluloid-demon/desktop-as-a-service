@@ -1,29 +1,24 @@
 #!/bin/bash
 
-# NOTE: You can run this in whatever distro you want. The sed-statement will allow us to bypass the WSL check and install the docker engine directly in our distro.
-
-# NOTE: For this purpose you can temporarily open your distro like this: `wsl -d ubuntu`
-
 FILE="get-docker.sh"
-TMP="tmp"
+TMP="/mnt/c/tmp/daas"
 URL="https://get.docker.com"
-
-MODIFIED_FILE="modified-${FILE}"
-
-init() {
-
-    mkdir -p "./${TMP}"
-
-}
 
 if ! which docker; then
 
-    init
+    # Initialize
+    mkdir -p $TMP && cd $TMP
 
-    curl -fsSL "$URL" -o "./${FILE}"
+    # Download
+    curl -fsSL $URL -o $FILE
 
-    sed '/if is_wsl; then/,/fi/d' "./${FILE}" > "./${MODIFIED_FILE}"
+    # Backup
+    mv $FILE ${FILE}.bak
 
-    eval "./${MODIFIED_FILE}"
+    # Remove check for WSL
+    sed '/if is_wsl; then/,/fi/d' ${FILE}.bak > $FILE
+
+    # Run
+    eval $FILE
 
 fi

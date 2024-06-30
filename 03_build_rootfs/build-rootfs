@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# WARNING: If project root is on Windows, git likely cloned with CRLF - run dos2unix first.
+# Exit on error
+set -e
 
 # Declare constants
-BUILD_DIR="./build"
-NAME="fedora-xfce"
+BUILD_DIR="/mnt/c/tmp/daas/build"
+NAME="fedora"
+OUTFILE="rootfs.tar"
 TAG="40"
 
-init() {
+IMAGE=$NAME:$TAG
 
-    mkdir -p "$BUILD_DIR"
-
-}
-
-init
+# Initialize
+mkdir -p $BUILD_DIR
 
 # Build image
 docker build --tag $NAME:$TAG .
@@ -21,10 +20,11 @@ docker build --tag $NAME:$TAG .
 # Spin up container
 docker run -t $NAME:$TAG bash -c ls /
 
-# Export container
-docker export -o "rootfs.tar" $(docker container ls -a | grep -i fedora-xfce | awk '{print $1}')
+# Evade UNC complaints
+cd $BUILD_DIR
 
-# (Optional) Clean build system
-# docker container prune
-# docker image prune
-# docker system prune
+# Export container
+docker export -o $OUTFILE "$(docker container ls -a | grep -i $IMAGE | awk '{print $1}')"
+
+# Prune unused containers
+docker container prune --force
