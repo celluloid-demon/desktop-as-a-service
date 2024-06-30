@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# WARNING: If project root is on Windows, git likely cloned with CRLF - run dos2unix first.
+
+# Declare constants
+BUILD_DIR="./build"
+NAME="fedora-xfce"
+TAG="40"
+
+init() {
+
+    mkdir -p "$BUILD_DIR"
+
+}
+
+init
+
+# Build image
+docker build --tag $NAME:$TAG .
+
+# Spin up container
+docker run -t $NAME:$TAG bash -c ls /
+
+# Export container
+docker export -o "${BUILD_DIR}/${NAME}${TAG}.tar" $(docker container ls -a | grep -i fedora-xfce | awk '{print $1}')
+
+# (Optional) Clean build system
+# docker container prune
+# docker image prune
+# docker system prune
