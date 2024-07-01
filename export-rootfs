@@ -32,6 +32,7 @@ mkdir -p $EXPORT_DIR
 docker run -t $IMAGE ls /
 
 # Export container
+echo "Writing archive, this may take a minute..."
 docker export -o ${EXPORT_DIR}/${OUTFILE} "$(docker container ls -a | grep -i $IMAGE | awk '{print $1}')"
 
 # Prune unused containers
