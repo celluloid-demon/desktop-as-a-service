@@ -2,7 +2,7 @@ FROM fedora:40
 
 ARG DEFAULT_USER=jonathan
 
-# Merge system files and WSL configuration
+# Configure WSL and speed up dnf
 COPY docker/etc/* /etc/
 
 # Update
