@@ -7,6 +7,7 @@ __Post-install steps (in no particular order):__
 - grab ssh filepack (place in `~/.filepacks/@ssh`)
 - authenticate git with gh: `gh auth login`
 - configure `~/Applications/rsync-helper-scripts`: `./flash`
+- disable screensaver, locksreen: `Settings Manager > Xfce Screensaver`
 
 __Additional GTK themes:__
 
