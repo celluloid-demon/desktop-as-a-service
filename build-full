@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Exit on error
+set -e
+
+# Declare constants
+BUILD_DIR="build"
+DOCKERFILE="Dockerfile.build-rootfs"
+NAME="rootfs-bootstrap"
+OUTFILE="rootfs.tar"
+TAG="40"
+# TMP="/mnt/c/tmp"
+
+IMAGE=$NAME:$TAG
+
+if ! which docker; then
+
+    install_script="install.sh"
+    url="https://github.com/celluloid-demon/docker-install"
+
+    # Clone
+    git clone "$url"
+
+    # Run
+    cd docker-install
+    sh $install_script
+
+fi
+
+# Build image
+docker build --file $DOCKERFILE --tag $NAME:$TAG .

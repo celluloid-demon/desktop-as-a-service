@@ -6,7 +6,7 @@ set -e
 # Declare constants
 BUILD_DIR="build"
 DOCKERFILE="Dockerfile.build-rootfs"
-NAME="fedora"
+NAME="rootfs"
 OUTFILE="rootfs.tar"
 TAG="40"
 # TMP="/mnt/c/tmp"
@@ -30,21 +30,11 @@ fi
 # Initialize
 mkdir -p $BUILD_DIR
 
-# Build image
-docker build --file $DOCKERFILE --tag $NAME:$TAG .
-
-# Spin up container
-docker run -t $NAME:$TAG bash -c ls /
-
-# Evade UNC complaints
-# cd $TMP
-
 # Export container
-# [ -f "${TMP}/${OUTFILE}" ] && rm "${TMP}/${OUTFILE}"
-docker export -o ${BUILD_DIR}/${OUTFILE} "$(docker container ls -a | grep -i $IMAGE | awk '{print $1}')"
+# docker export -o ${BUILD_DIR}/${OUTFILE} "$(docker container ls -a | grep -i $IMAGE | awk '{print $1}')"
 
 # Prune unused containers
-docker container prune --force
+# docker container prune --force
 
 # Remove old build images but keep cached layers
-docker image rm --force $IMAGE
+# docker image rm --force $IMAGE

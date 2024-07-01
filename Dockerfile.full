@@ -1,4 +1,4 @@
-FROM fedora:40
+FROM fedora-desktop-base:40
 
 # Merge user files and set permissions
 COPY --chmod=755 --chown=jonathan:jonathan docker/home/jonathan/.local/bin/* /home/jonathan/.local/bin/

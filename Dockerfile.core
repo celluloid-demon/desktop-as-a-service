@@ -9,10 +9,17 @@ COPY docker/etc/* /etc/
 RUN dnf update -y
 
 # Install packages
-RUN dnf install -y @core byobu curl firefox flatpak gh git nano pv rsync screen tldr tmux tree passwd wget
+RUN dnf install -y @core byobu curl firefox flatpak gh git mpv nano pv rhythmbox rsync screen tldr tmux tree passwd wget
+
+# Install desktop environment
+RUN dnf groupinstall -y "Xfce Desktop"
+
+# Install XFCE applications (it's orage, not orange)
+RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard
+
+# Install developer tools
 RUN dnf groupinstall -y "Development Tools"
 RUN dnf groupinstall -y "Development Libraries"
-RUN dnf groupinstall -y "Xfce Desktop"
 
 # Configure rpmfusion
 RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -38,7 +45,7 @@ RUN dnf install -y google-chrome-stable
 
 # Add user
 RUN useradd --create-home ${DEFAULT_USER}
-RUN echo ${DEFAULT_USER}:password | chpasswd
+# RUN echo ${DEFAULT_USER}:password | chpasswd
 RUN usermod -a -G wheel ${DEFAULT_USER}
 
 # Merge user files and set permissions
