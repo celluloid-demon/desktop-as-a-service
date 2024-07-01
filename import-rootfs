@@ -4,24 +4,33 @@
 set -e
 
 # Declare constants
-BUILD_DIR=/mnt/c/tmp/daas/build
+BUILD_DIR=build
 DISTRO_NAME=Fedora
+INSTALL_LOCATION="/mnt/c/Program Files/Fedora"
 INSTALL_TAR_FILE=rootfs.tar
-LAUNCHER="Fedora (Desktop.lnk)"
+LAUNCHER="Fedora (Desktop).lnk"
+TMP=/mnt/c/tmp
 WIN_HOME=/mnt/c/Users/Jonathan
 
-WIN_BUILD_DIR='C:\tmp\daas\build'
-WIN_INSTALL_LOCATION='C:\Fedora'
+WIN_TMP='C:\tmp'
+WIN_INSTALL_LOCATION='C:\Program Files\Fedora'
+
+# Exit if rootfs archive missing
+[ ! -f ${BUILD_DIR}/${INSTALL_TAR_FILE}  ] && echo "${BUILD_DIR}/${INSTALL_TAR_FILE} not detected, exiting..." && exit 1
 
 # Initialize
-[ ! -f ${BUILD_DIR}/${INSTALL_TAR_FILE}  ] && echo "${BUILD_DIR}/${INSTALL_TAR_FILE} not detected, exiting..." && exit 1
-[ ! -f "${WIN_HOME}/Desktop/${LAUNCHER}" ] && cp "$LAUNCHER" ${WIN_HOME}/Desktop/
+mkdir -p "$INSTALL_LOCATION"
+mkdir -p "$TMP"
+
+# "Flash" launcher
+[ ! -f "${WIN_HOME}/Desktop/${LAUNCHER}" ] && cp "resources/${LAUNCHER}" ${WIN_HOME}/Desktop/
 
 # Evade UNC complaints
-cd $BUILD_DIR
+cp ${BUILD_DIR}/${INSTALL_TAR_FILE} ${TMP}/
+cd $TMP
 
 # wsl --import <DistroName> <InstallLocation> <InstallTarFile>
-cmd.exe /c wsl --import $DISTRO_NAME $WIN_INSTALL_LOCATION ${WIN_BUILD_DIR}/${INSTALL_TAR_FILE}
+cmd.exe /c wsl --import $DISTRO_NAME $WIN_INSTALL_LOCATION ${WIN_TMP}/${INSTALL_TAR_FILE}
 
 # Cleanup
-rm ${BUILD_DIR}/${INSTALL_TAR_FILE}
+rm ${TMP}/${INSTALL_TAR_FILE}

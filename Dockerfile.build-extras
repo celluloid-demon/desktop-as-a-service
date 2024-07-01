@@ -1,0 +1,68 @@
+FROM fedora:40
+
+# Merge user files and set permissions
+COPY --chmod=755 --chown=jonathan:jonathan docker/home/jonathan/.local/bin/* /home/jonathan/.local/bin/
+COPY --chown=jonathan:jonathan docker/home/jonathan/Desktop/* /home/jonathan/Desktop/
+
+# Configure git
+RUN git config --global user.name  jonathan
+RUN git config --global user.email celluloid-demon@users.noreply.github.com
+
+USER jonathan
+RUN mkdir -p ${HOME}/Applications
+RUN mkdir -p ${HOME}/Desktop
+RUN mkdir -p ${HOME}/git
+
+# Download rsync-helper-scripts (installation requires SystemD / WSL)
+# RUN su - jonathan -c 'cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/rsync-helper-scripts"'
+RUN cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/rsync-helper-scripts"
+
+# Install yt-dlp
+RUN mkdir -p ${HOME}/.local/bin
+RUN curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -o "${HOME}/.local/bin/yt-dlp"
+RUN chmod a+rx ${HOME}/.local/bin/yt-dlp
+
+# Install shared-config-nix
+RUN cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/shared-config-nix"
+RUN mkdir -p ${HOME}/.bashrc.d
+
+USER root
+
+RUN su - jonathan -c ln -s Applications/shared-config-nix/home/bin bin
+RUN su - jonathan -c ln -s Applications/shared-config-nix/home/usr usr
+RUN su - jonathan -c ln -s ${HOME}/Applications/shared-config-nix/dot-files/bash_aliases .bashrc.d/bash_aliases
+
+USER jonathan
+
+# Install Discord
+RUN mkdir -p ${HOME}/Downloads
+RUN wget -O "${HOME}/Downloads/discord.tar.gz" "https://discord.com/api/download?platform=linux&format=tar.gz"
+RUN tar -xvzf ${HOME}/Downloads/discord.tar.gz -C ${HOME}/Applications/
+RUN mkdir -p ${HOME}/.local/share/applications
+RUN cp ${HOME}/Applications/Discord/discord.desktop ${HOME}/.local/share/applications/
+RUN sed -i "s|^Exec=.*|Exec=${HOME}/Applications/Discord/Discord|g"     ${HOME}/.local/share/applications/discord.desktop
+RUN sed -i "s|^Icon=.*|Icon=${HOME}/Applications/Discord/discord.png|g" ${HOME}/.local/share/applications/discord.desktop
+
+# Configure ssh
+RUN mkdir -p ${HOME}/.filepacks/@ssh
+RUN ln -s ${HOME}/.filepacks/@ssh ${HOME}/.ssh
+
+# Configure byobu
+RUN byobu-enable
+
+# Configure xfce
+RUN echo "screen -dmS xfce up-xfce" >> ${HOME}/.bashrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
