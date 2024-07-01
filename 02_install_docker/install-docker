@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on error
+set -e
+
 FILE="get-docker.sh"
 TMP="/mnt/c/tmp/daas"
 URL="https://get.docker.com"

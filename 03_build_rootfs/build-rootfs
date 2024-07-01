@@ -24,7 +24,11 @@ docker run -t $NAME:$TAG bash -c ls /
 cd $BUILD_DIR
 
 # Export container
+[ -f "${BUILD_DIR}/${OUTFILE}" ] && rm "${BUILD_DIR}/${OUTFILE}"
 docker export -o $OUTFILE "$(docker container ls -a | grep -i $IMAGE | awk '{print $1}')"
 
 # Prune unused containers
 docker container prune --force
+
+# Remove old build images but keep cached layers
+docker image rm --force $IMAGE
