@@ -31,7 +31,7 @@ cp ${EXPORT_DIR}/${INSTALL_TAR_FILE} ${TMP}/
 cd $TMP
 
 # wsl --import <DistroName> <InstallLocation> <InstallTarFile>
-cmd.exe /c wsl --import $DISTRO_NAME $WIN_INSTALL_LOCATION ${INSTALL_TAR_FILE}
+cmd.exe /c wsl --import "$DISTRO_NAME" "$WIN_INSTALL_LOCATION" "${INSTALL_TAR_FILE}"
 
 # Cleanup
 rm ${TMP}/${INSTALL_TAR_FILE}
