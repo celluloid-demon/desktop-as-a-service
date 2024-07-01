@@ -3,6 +3,11 @@
 if [ -z $(pidof xfce4-session) ]; then
 
     # Declare constants
+    WIN_HOME=/mnt/c/Users/Jonathan
+    APPLICATIONS=${WIN_HOME}/Applications
+    APP_DIR=${APPLICATIONS}/Fedora
+
+    # Set environment
     export HOST_IP=$(ip route list default | awk '{print $3}')
     export DISPLAY=$HOST_IP:0
     export PULSE_SERVER=tcp:$HOST_IP
@@ -12,8 +17,8 @@ if [ -z $(pidof xfce4-session) ]; then
     [ -f "$xfwm4_config" ] && sed -i '/property name=\"use_compositing\"/d' "$xfwm4_config"
 
     # Evade UNC complaints
-    [ ! -f "/mnt/c/tmp/daas/xfce.xlaunch" ] && cp ${HOME}/.local/bin/xfce.xlaunch /mnt/c/tmp/daas/
-    cd /mnt/c/tmp/daas
+    [ ! -f "${APP_DIR}/xfce.xlaunch" ] && cp ${HOME}/.local/bin/xfce.xlaunch ${APP_DIR}/
+    cd $APP_DIR
 
     # Start x-server
     cmd.exe /c '.\xfce.xlaunch'
