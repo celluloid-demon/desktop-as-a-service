@@ -5,17 +5,32 @@ set -e
 
 # Declare constants
 BUILD_DIR="/mnt/c/tmp/daas/build"
+DOCKERFILE="Dockerfile.build-rootfs"
 NAME="fedora"
 OUTFILE="rootfs.tar"
 TAG="40"
 
 IMAGE=$NAME:$TAG
 
+if ! which docker; then
+
+    install_script="install.sh"
+    url="https://github.com/celluloid-demon/docker-install"
+
+    # Clone
+    git clone "$url"
+
+    # Run
+    cd docker-install
+    sh $install_script
+
+fi
+
 # Initialize
 mkdir -p $BUILD_DIR
 
 # Build image
-docker build --tag $NAME:$TAG .
+docker build --file $DOCKERFILE --tag $NAME:$TAG .
 
 # Spin up container
 docker run -t $NAME:$TAG bash -c ls /

@@ -1,8 +1,8 @@
 FROM fedora:40
 
 # Merge system files and WSL configuration
-COPY etc/* /etc/
-COPY --chmod=755 usr/local/bin/* /usr/local/bin/
+COPY root/etc/* /etc/
+COPY --chmod=755 root/usr/local/bin/* /usr/local/bin/
 
 # Add user
 RUN useradd --create-home jonathan
@@ -10,8 +10,8 @@ RUN echo jonathan:password | chpasswd
 RUN usermod -a -G wheel jonathan
 
 # Merge user files and set permissions
-COPY --chmod=755 --chown=jonathan:jonathan home/jonathan/.local/bin/* /home/jonathan/.local/bin/
-COPY --chown=jonathan:jonathan home/jonathan/Desktop/* /home/jonathan/Desktop/
+COPY --chmod=755 --chown=jonathan:jonathan root/home/jonathan/.local/bin/* /home/jonathan/.local/bin/
+COPY --chown=jonathan:jonathan root/home/jonathan/Desktop/* /home/jonathan/Desktop/
 
 # Update
 RUN dnf update -y

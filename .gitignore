@@ -80,5 +80,6 @@ $RECYCLE.BIN/
 # custom
 
 *.tar
+*.zip
 build
 tmp
