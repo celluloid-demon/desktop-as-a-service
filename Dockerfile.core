@@ -1,18 +1,22 @@
 FROM fedora:40
 
 ARG DEFAULT_USER=jonathan
+ARG XFCE_WRAPPER_DIR=/home/${DEFAULT_USER}/.local/opt/xfce-wrapper
 
-# Configure WSL and speed up dnf
+# Merge configuration files
 COPY docker/etc/* /etc/
 
 # Update
 RUN dnf update -y
 
 # Install packages
-RUN dnf install -y @core byobu curl firefox flatpak gh git mpv nano pv rhythmbox rsync screen tldr tmux tree passwd wget
+RUN dnf install -y @core byobu curl firefox flatpak gh git mpv nano neofetch pv rhythmbox rsync screen tldr tmux tree passwd wget
 
 # Install desktop environment
 RUN dnf groupinstall -y "Xfce Desktop"
+
+# Install XFCE themes
+RUN dnf install -y numix-gtk-theme numix-icon-theme numix-icon-theme-circle numix-icon-theme-square pop-gtk4-theme pop-icon-theme pop-sound-theme
 
 # Install XFCE applications (it's orage, not orange)
 RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard
@@ -49,12 +53,21 @@ RUN echo "${DEFAULT_USER}:password" | chpasswd
 RUN usermod -a -G wheel ${DEFAULT_USER}
 
 # Merge user files and set permissions
-COPY --chmod=755 --chown=${DEFAULT_USER}:${DEFAULT_USER} docker/home/${DEFAULT_USER}/.local/bin/* /home/${DEFAULT_USER}/.local/bin/
-COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} docker/home/${DEFAULT_USER}/Desktop/* /home/${DEFAULT_USER}/Desktop/
+COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} docker/home/${DEFAULT_USER}/* /home/${DEFAULT_USER}/
+RUN chmod 755 ${XFCE_WRAPPER_DIR}/bin/*
 
-# Auto-start xfce for user '${DEFAULT_USER}'
 USER ${DEFAULT_USER}
-RUN echo "screen -dmS xfce up-xfce" >> ${HOME}/.bashrc
+
+# Configure shell
+RUN byobu-enable
+RUN echo "neofetch" >> ${HOME}/.bashrc
+RUN echo "alias start-desktop='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
+RUN echo "alias start-xfce='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
+RUN echo "alias sd='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
+RUN echo "alias sx='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
+
+# Auto-start xfce for user '${DEFAULT_USER}' #NOTE: DEPRECATED
+# RUN echo "screen -dmS xfce up-xfce" >> ${HOME}/.bashrc
 
 
 

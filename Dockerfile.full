@@ -1,9 +1,5 @@
 FROM fedora-desktop-core:40
 
-# Merge user files and set permissions
-COPY --chmod=755 --chown=jonathan:jonathan docker/home/jonathan/.local/bin/* /home/jonathan/.local/bin/
-COPY --chown=jonathan:jonathan docker/home/jonathan/Desktop/* /home/jonathan/Desktop/
-
 # Initialize required directories
 USER jonathan
 
@@ -42,9 +38,6 @@ RUN sed -i "s|^Icon=.*|Icon=${HOME}/Applications/Discord/discord.png|g" ${HOME}/
 # Configure ssh
 RUN mkdir -p ${HOME}/.filepacks/@ssh
 RUN ln -s ${HOME}/.filepacks/@ssh ${HOME}/.ssh
-
-# Configure byobu
-RUN byobu-enable
 
 
 

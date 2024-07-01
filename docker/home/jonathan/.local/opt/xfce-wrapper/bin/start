@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Declare constants
+WRAPPER_BIN="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WRAPPER_DIR=${WRAPPER_BIN}/..
+WRAPPER_RESOURCES=${WRAPPER_DIR}/resources
+
+XLAUNCH_FILE=xfce.xlaunch
+
+WIN_HOME=/mnt/c/Users/Jonathan
+WIN_APPLICATIONS=${WIN_HOME}/Applications
+WIN_APP_DIR=${WIN_APPLICATIONS}/Fedora
+
+# Handle errors
+trap 'exit_nonzero $LINENO' ERR
+
+cleanup() {
+
+    pkill '(gpg|ssh)-agent'
+    taskkill.exe /IM pulseaudio.exe /F
+    taskkill.exe /IM vcxsrv.exe /F
+    rm -rf ${WIN_HOME}/.config/pulse/* # Clean stale PIDs
+
+}
+
+exit_nonzero() {
+
+    echo "Error found on line ${LINENO}, exiting..."
+
+    cleanup
+
+}
+
+main() {
+
+    # Set environment
+    export HOST_IP=$(ip route list default | awk '{print $3}')
+    export DISPLAY=$HOST_IP:0
+    export PULSE_SERVER=tcp:$HOST_IP
+
+    # NOTE: Fix a bug with compositing not loading correctly, symptom is choppy desktop UI (it initializes as expected tho)
+    xfwm4_config="${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+    [ -f "$xfwm4_config" ] && sed -i '/property name=\"use_compositing\"/d' "$xfwm4_config"
+
+    # Evade UNC complaints
+    [ ! -f "${WIN_APP_DIR}/${XLAUNCH_FILE}" ] && cp "${WRAPPER_RESOURCES}/${XLAUNCH_FILE}" "${WIN_APP_DIR}/"
+    cd $WIN_APP_DIR
+
+    # Start x-server
+    cmd.exe /c ".\\${XLAUNCH_FILE}"
+    cmd.exe /c 'C:\pulseaudio\bin\pulseaudio.exe' &
+
+    # Enforce ~ as working directory for xfce-session (rationale: makes new terminal sessions more comfortable)
+    # NOTE: Do NOT start in background (desired behavior: cleanup logic will run when user logs out)
+    cd "$HOME" && startxfce4
+
+    cleanup
+
+}
+
+[ -z $(pidof xfce4-session) ] && main

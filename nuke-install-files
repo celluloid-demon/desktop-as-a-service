@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# TODO WIP...
+
+EXPORT_DIR=export
+
+docker system prune --force
+
+rm -rf ${EXPORT_DIR}/*
