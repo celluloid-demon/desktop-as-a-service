@@ -7,7 +7,6 @@ set -e
 # BUILD_DIR="build"
 DOCKERFILE="Dockerfile.core"
 NAME="fedora-desktop-core"
-# OUTFILE="fedora-desktop-core.tar"
 TAG="40"
 
 IMAGE=$NAME:$TAG
