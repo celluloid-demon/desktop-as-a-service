@@ -4,7 +4,7 @@
 set -e
 
 # Declare constants
-BUILD_DIR=build
+EXPORT_DIR=export
 DISTRO_NAME=Fedora
 INSTALL_LOCATION="/mnt/c/Users/Jonathan/Applications/Fedora"
 INSTALL_TAR_FILE=rootfs.tar
@@ -16,7 +16,7 @@ WIN_TMP='C:\tmp'
 WIN_INSTALL_LOCATION='C:\Users\Jonathan\Applications\Fedora'
 
 # Exit if rootfs archive missing
-[ ! -f ${BUILD_DIR}/${INSTALL_TAR_FILE}  ] && echo "${BUILD_DIR}/${INSTALL_TAR_FILE} not detected, exiting..." && exit 1
+[ ! -f ${EXPORT_DIR}/${INSTALL_TAR_FILE}  ] && echo "${EXPORT_DIR}/${INSTALL_TAR_FILE} not detected, exiting..." && exit 1
 
 # Initialize
 mkdir -p "$INSTALL_LOCATION"
@@ -27,7 +27,7 @@ mkdir -p "$TMP"
 
 # Evade UNC complaints
 echo "Copying working files to tmp directory..."
-cp ${BUILD_DIR}/${INSTALL_TAR_FILE} ${TMP}/
+cp ${EXPORT_DIR}/${INSTALL_TAR_FILE} ${TMP}/
 cd $TMP
 
 # wsl --import <DistroName> <InstallLocation> <InstallTarFile>

@@ -1,20 +1,21 @@
-FROM fedora-desktop-base:40
+FROM fedora-desktop-core:40
 
 # Merge user files and set permissions
 COPY --chmod=755 --chown=jonathan:jonathan docker/home/jonathan/.local/bin/* /home/jonathan/.local/bin/
 COPY --chown=jonathan:jonathan docker/home/jonathan/Desktop/* /home/jonathan/Desktop/
 
-# Configure git
-RUN git config --global user.name  jonathan
-RUN git config --global user.email celluloid-demon@users.noreply.github.com
-
+# Initialize required directories
 USER jonathan
+
 RUN mkdir -p ${HOME}/Applications
 RUN mkdir -p ${HOME}/Desktop
 RUN mkdir -p ${HOME}/git
 
-# Download rsync-helper-scripts (installation requires SystemD / WSL)
-# RUN su - jonathan -c 'cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/rsync-helper-scripts"'
+# Configure git
+RUN git config --global user.name  jonathan
+RUN git config --global user.email celluloid-demon@users.noreply.github.com
+
+# Download rsync-helper-scripts (complete installation requires WSL-provided SystemD)
 RUN cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/rsync-helper-scripts"
 
 # Install yt-dlp
@@ -25,14 +26,9 @@ RUN chmod a+rx ${HOME}/.local/bin/yt-dlp
 # Install shared-config-nix
 RUN cd ${HOME}/Applications && git clone "https://www.github.com/celluloid-demon/shared-config-nix"
 RUN mkdir -p ${HOME}/.bashrc.d
-
-USER root
-
-RUN su - jonathan -c ln -s Applications/shared-config-nix/home/bin bin
-RUN su - jonathan -c ln -s Applications/shared-config-nix/home/usr usr
-RUN su - jonathan -c ln -s ${HOME}/Applications/shared-config-nix/dot-files/bash_aliases .bashrc.d/bash_aliases
-
-USER jonathan
+RUN ln -s ${HOME}/Applications/shared-config-nix/home/bin ${HOME}/bin
+RUN ln -s ${HOME}/Applications/shared-config-nix/home/usr ${HOME}/usr
+RUN ln -s ${HOME}/Applications/shared-config-nix/dot-files/bash_aliases ${HOME}/.bashrc.d/bash_aliases
 
 # Install Discord
 RUN mkdir -p ${HOME}/Downloads
@@ -49,9 +45,6 @@ RUN ln -s ${HOME}/.filepacks/@ssh ${HOME}/.ssh
 
 # Configure byobu
 RUN byobu-enable
-
-# Configure xfce
-RUN echo "screen -dmS xfce up-xfce" >> ${HOME}/.bashrc
 
 
 

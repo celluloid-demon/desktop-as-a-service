@@ -4,12 +4,11 @@
 set -e
 
 # Declare constants
-BUILD_DIR="build"
-DOCKERFILE="Dockerfile.build-rootfs"
-NAME="rootfs-bootstrap"
-OUTFILE="rootfs.tar"
+# BUILD_DIR="build"
+DOCKERFILE="Dockerfile.full"
+NAME="fedora-desktop-full"
+# OUTFILE="rootfs.tar"
 TAG="40"
-# TMP="/mnt/c/tmp"
 
 IMAGE=$NAME:$TAG
 
