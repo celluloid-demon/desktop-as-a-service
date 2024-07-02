@@ -19,3 +19,7 @@ __Additional Icon themes:__
 
 - `https://github.com/vinceliuice/Fluent-icon-theme`
 - `https://github.com/vinceliuice/WhiteSur-icon-theme`
+
+__Additional theme browsing:__
+
+- `https://www.opendesktop.org`
