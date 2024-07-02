@@ -65,6 +65,7 @@ RUN echo "alias start-desktop='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashr
 RUN echo "alias start-xfce='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
 RUN echo "alias sd='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
 RUN echo "alias sx='${XFCE_WRAPPER_DIR}/bin/start'" >> ${HOME}/.bashrc
+RUN echo "echo 'You may run `start-desktop` / `sd` to start a graphical desktop gui with WSL (remove this line from .bashrc to dismiss this message).'" >> ${HOME}/.bashrc
 
 # Auto-start xfce for user '${DEFAULT_USER}' #NOTE: DEPRECATED
 # RUN echo "screen -dmS xfce up-xfce" >> ${HOME}/.bashrc
