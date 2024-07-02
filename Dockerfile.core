@@ -19,7 +19,7 @@ RUN dnf groupinstall -y "Xfce Desktop"
 RUN dnf install -y numix-gtk-theme numix-icon-theme numix-icon-theme-circle numix-icon-theme-square pop-gtk4-theme pop-icon-theme pop-sound-theme
 
 # Install XFCE applications (it's orage, not orange)
-RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard xfce4-whiskermenu-plugin
+RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard xfce4-whiskermenu-plugin xfce4-docklike-plugin
 
 # Install developer tools
 RUN dnf groupinstall -y "Development Tools"
