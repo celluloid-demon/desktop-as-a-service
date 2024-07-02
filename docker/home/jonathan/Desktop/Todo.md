@@ -9,6 +9,7 @@ __Post-install steps (in no particular order):__
 - configure `~/Applications/rsync-helper-scripts`: `./flash`
 - disable screensaver, locksreen: `Settings Manager > Xfce Screensaver`
 - set up whisker, docklike panel plugins
+- import example panel (see desktop tarball)
 
 __Additional GTK themes:__
 
