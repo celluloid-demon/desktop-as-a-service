@@ -13,11 +13,13 @@ __Post-install steps (in no particular order):__
 __Additional GTK themes:__
 
 - `https://github.com/vinceliuice/Fluent-gtk-theme`
+- `https://github.com/vinceliuice/Mojave-gtk-theme`
 - `https://github.com/vinceliuice/WhiteSur-gtk-theme`
 
 __Additional Icon themes:__
 
 - `https://github.com/vinceliuice/Fluent-icon-theme`
+- `https://github.com/vinceliuice/McMojave-circle`
 - `https://github.com/vinceliuice/WhiteSur-icon-theme`
 
 __Additional theme browsing:__
