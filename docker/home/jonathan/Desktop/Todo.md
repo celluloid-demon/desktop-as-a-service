@@ -3,7 +3,7 @@ TODO
 
 __Post-install steps (in no particular order):__
 
-- set password: `passwd | chpasswd`
+- set password: `echo "<USERNAME>:<NEW PASSWORD>" | chpasswd`
 - grab ssh filepack (place in `~/.filepacks/@ssh`)
 - authenticate git with gh: `gh auth login`
 - configure `~/Applications/rsync-helper-scripts`: `./flash`
