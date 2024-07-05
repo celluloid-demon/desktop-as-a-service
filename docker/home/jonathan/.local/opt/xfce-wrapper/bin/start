@@ -51,9 +51,24 @@ main() {
     cmd.exe /c 'C:\pulseaudio\bin\pulseaudio.exe' &
 
     # Enforce ~ as working directory for xfce-session (rationale: makes new terminal sessions more comfortable)
-    # NOTE: Do NOT start in background (desired behavior: cleanup logic will run when user logs out)
-    cd "$HOME" && startxfce4
+    cd "$HOME"
 
+    startxfce4 &
+
+    xfce_session_pid=$!
+
+    # Give xfce4-screensaver time to start
+    sleep 10
+
+    xfce_screensaver_pid=$(ps -aux | grep xfce4-screensaver | awk '{print $2}')
+
+    # Suppress xlib complaints
+    kill $xfce_screensaver_pid
+
+    echo "Waiting until user logout..."
+    wait $xfce_session_pid
+
+    # Run cleanup logic when user logs out
     cleanup
 
 }
