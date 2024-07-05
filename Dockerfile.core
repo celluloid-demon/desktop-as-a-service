@@ -10,7 +10,7 @@ COPY docker/etc/* /etc/
 RUN dnf update -y
 
 # Install packages
-RUN dnf install -y @core byobu curl firefox flatpak gh git mpv nano neofetch pv rhythmbox rsync screen tldr tmux tree passwd wget
+RUN dnf install -y @core byobu curl firefox flatpak gh git lollypop mpv nano neofetch pv rhythmbox rsync screen tldr tmux tree passwd wget
 
 # Install desktop environment
 RUN dnf groupinstall -y "Xfce Desktop"
