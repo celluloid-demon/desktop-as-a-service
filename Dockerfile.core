@@ -1,6 +1,7 @@
 FROM fedora:40
 
 ARG DEFAULT_USER=jonathan
+ARG VERACRYPT_URL=https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-CentOS-8-x86_64.rpm
 ARG XFCE_WRAPPER_DIR=/home/${DEFAULT_USER}/.local/opt/xfce-wrapper
 
 # Merge configuration files
@@ -9,8 +10,8 @@ COPY docker/etc/* /etc/
 # Update
 RUN dnf update -y
 
-# Install packages
-RUN dnf install -y @core byobu curl firefox flatpak gh git lollypop mpv nano neofetch pv rhythmbox rsync screen tldr tmux tree passwd wget
+# Install base packages
+RUN dnf install -y @core byobu curl firefox flatpak gh git lollypop mpv nano neofetch pv rhythmbox rsync screen tldr tmux tree passwd wget which
 
 # Install desktop environment
 RUN dnf groupinstall -y "Xfce Desktop"
@@ -19,7 +20,7 @@ RUN dnf groupinstall -y "Xfce Desktop"
 RUN dnf install -y numix-gtk-theme numix-icon-theme numix-icon-theme-circle numix-icon-theme-square pop-gtk4-theme pop-icon-theme pop-sound-theme
 
 # Install XFCE applications (it's orage, not orange)
-RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard xfce4-whiskermenu-plugin xfce4-docklike-plugin
+RUN dnf install -y orage xfburn xfce4-dict catfish ristretto parole xfmpc xfce4-notifyd gigolo xfce4-panel-profiles xfce4-screensaver xfce4-screenshooter xfce4-taskmanager xfce4-terminal mousepad xfdashboard xfce4-whiskermenu-plugin xfce4-docklike-plugin xarchiver
 
 # Install developer tools
 RUN dnf groupinstall -y "Development Tools"
@@ -46,6 +47,9 @@ RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flath
 RUN dnf install -y fedora-workstation-repositories
 RUN dnf config-manager --set-enabled google-chrome
 RUN dnf install -y google-chrome-stable
+
+# Install veracrypt
+RUN dnf install -y "${VERACRYPT_URL}"
 
 # Evade tracker complaints with the ntfs filesystem
 RUN dnf remove -y tracker
