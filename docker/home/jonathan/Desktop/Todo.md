@@ -27,3 +27,7 @@ __Additional Icon themes:__
 __Additional theme browsing:__
 
 - `https://www.opendesktop.org`
+
+__Additional app browing:__
+
+- `https://alternativeto.net/platform/xfce/`
