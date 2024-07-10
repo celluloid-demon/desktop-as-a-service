@@ -1,6 +1,7 @@
 FROM fedora:40
 
 ARG DEFAULT_USER=jonathan
+ARG PEAZIP_URL=https://github.com/peazip/PeaZip/releases/download/9.8.0/peazip-9.8.0.LINUX.GTK2-1.x86_64.rpm
 ARG VERACRYPT_URL=https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-CentOS-8-x86_64.rpm
 ARG XFCE_WRAPPER_DIR=/home/${DEFAULT_USER}/.local/opt/xfce-wrapper
 
@@ -47,6 +48,9 @@ RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flath
 RUN dnf install -y fedora-workstation-repositories
 RUN dnf config-manager --set-enabled google-chrome
 RUN dnf install -y google-chrome-stable
+
+# Install peazip
+RUN dnf install -y "${PEAZIP_URL}"
 
 # Install veracrypt
 RUN dnf install -y "${VERACRYPT_URL}"
